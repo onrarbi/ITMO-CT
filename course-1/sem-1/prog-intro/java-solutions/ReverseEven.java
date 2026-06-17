@@ -1,41 +1,45 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class ReverseEven {
+    private static boolean isDelimiter(char c) {
+        return Character.isWhitespace(c) || Character.getType(c) == Character.START_PUNCTUATION || Character.getType(c) == Character.END_PUNCTUATION;
+    }
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         List<int[]> lines = new ArrayList<>();
 
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            Scanner lineScanner = new Scanner(line);
+        try (NewScanner scanner = new NewScanner(System.in)) {
+            scanner.setDelimiter(ReverseEven::isDelimiter);
 
-            int[] numbers = new int[1];
-            int numCount = 0;
+            while (scanner.hasNextLine()) {
+                int[] numbers = new int[1];
+                int numCount = 0;
 
-            while (lineScanner.hasNextInt()) {
-                if (numCount == numbers.length) {
-                    numbers = Arrays.copyOf(numbers, numbers.length * 2);
+                while (scanner.hasNextIntInLine()) {
+                    if (numCount == numbers.length) {
+                        numbers = Arrays.copyOf(numbers, numbers.length * 2);
+                    }
+
+                    numbers[numCount] = scanner.nextIntInLine();
+                    numCount++;
                 }
 
-                numbers[numCount] = lineScanner.nextInt();
-                numCount++;
+                lines.add(Arrays.copyOf(numbers, numCount));
+
+                if (scanner.hasNextLine()) {
+                    scanner.nextLine();
+                }
             }
-
-            lines.add(Arrays.copyOf(numbers, numCount));
-            lineScanner.close();
         }
-
-        scanner.close();
 
         for (int i = lines.size() - 1; i >= 0; i--) {
             int[] numbers = lines.get(i);
             boolean firstNumber = true;
 
             for (int j = numbers.length - 1; j >= 0; j--) {
-                if ((i + j + 2) % 2 == 0) {
+                if ((i + j) % 2 == 0) {
                     if (!firstNumber) {
                         System.out.print(" ");
                     }

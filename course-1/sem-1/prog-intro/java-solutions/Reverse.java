@@ -1,34 +1,32 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class Reverse {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         List<int[]> lines = new ArrayList<>();
 
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            Scanner lineScanner = new Scanner(line);
+        try (NewScanner scanner = new NewScanner(System.in)) {
+            while (scanner.hasNextLine()) {
+                int[] numbers = new int[1];
+                int numCount = 0;
 
-            int[] numbers = new int[1];
-            int numCount = 0;
+                while (scanner.hasNextIntInLine()) {
+                    if (numCount == numbers.length) {
+                        numbers = Arrays.copyOf(numbers, numbers.length * 2);
+                    }
 
-            while (lineScanner.hasNextInt()) {
-                if (numCount == numbers.length) {
-                    numbers = Arrays.copyOf(numbers, numbers.length * 2);
+                    numbers[numCount] = scanner.nextIntInLine();
+                    numCount++;
                 }
 
-                numbers[numCount] = lineScanner.nextInt();
-                numCount++;
+                lines.add(Arrays.copyOf(numbers, numCount));
+
+                if (scanner.hasNextLine()) {
+                    scanner.nextLine();
+                }
             }
-
-            lines.add(Arrays.copyOf(numbers, numCount));
-            lineScanner.close();
         }
-
-        scanner.close();
 
         for (int i = lines.size() - 1; i >= 0; i--) {
             int[] numbers = lines.get(i);

@@ -7,9 +7,7 @@ import java.util.Map;
 
 public class WordStatLength {
     private static boolean isWordChar(char c) {
-        return Character.isLetter(c)
-                || c == '\''
-                || Character.getType(c) == Character.DASH_PUNCTUATION;
+        return Character.isLetter(c) || c == '\'' || Character.getType(c) == Character.DASH_PUNCTUATION;
     }
 
     public static void main(String[] args) {
